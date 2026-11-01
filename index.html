@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>COSMOS ODYSSEY</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--g:rgba(10,18,38,.5);--b:rgba(150,200,255,.28);--t:#e8f0ff;--m:#8fa6c8;--a:#7fd0ff;--gold:#ffc872;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:#02030a;color:var(--t);font:15px/1.5 Figtree,system-ui,sans-serif}
+#c{position:fixed;inset:0;width:100%;height:100%;touch-action:none}
+.glass{background:var(--g);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--b);border-radius:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 10px 40px rgba(0,0,0,.4)}
+button,select{font:inherit;color:var(--t);background:rgba(120,180,255,.1);border:1px solid var(--b);border-radius:10px;padding:8px 12px;cursor:pointer;transition:.2s}
+button:hover{background:rgba(120,180,255,.25);border-color:var(--a)}select option{background:#0a1226}
+.hid,[hidden]{display:none!important}
+#ld{position:fixed;inset:0;z-index:50;background:#02030a;display:grid;place-items:center;text-align:center;transition:opacity 1s;font-family:Unbounded,sans-serif;letter-spacing:.2em}
+#ld i{display:block;width:220px;height:2px;background:#123;margin:16px auto}#ld i b{display:block;height:100%;width:0;background:var(--a);transition:width 1.2s}
+#dv{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgba(2,3,10,.6);padding:16px}
+#dv .glass{padding:28px 24px;text-align:center;max-width:560px;width:100%}
+#dv h2{font:600 clamp(1.2rem,4vw,1.8rem) Unbounded,sans-serif;letter-spacing:.12em;margin:0 0 6px}
+#dv p{color:var(--m);margin:0 0 20px}
+#dv .ch{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#dv button{padding:22px 10px;font-size:17px;line-height:1.4}#dv button small{display:block;color:var(--m);font-size:12px;margin-top:6px}
+@media(max-width:480px){#dv .ch{grid-template-columns:1fr}}
+#nv{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);display:flex;gap:4px;padding:5px;max-width:calc(100% - 16px);overflow-x:auto;z-index:5}
+#nv button{border:0;background:none;font-size:12px;letter-spacing:.1em;white-space:nowrap;padding:7px 11px}#nv button.on{background:rgba(127,208,255,.2);box-shadow:inset 0 -2px var(--a)}
+#title{position:fixed;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;z-index:3}
+#title *{pointer-events:auto}h1{font:600 clamp(1.8rem,7vw,5.2rem)/1 Unbounded,sans-serif;letter-spacing:.12em;margin:0;text-shadow:0 0 40px rgba(127,208,255,.5)}
+#title p{font:300 clamp(.9rem,2.4vw,1.4rem) Unbounded,sans-serif;letter-spacing:.3em;color:var(--m);margin:14px 0 30px}
+#title div{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}#title button{padding:12px 20px;letter-spacing:.12em;font-size:13px}#title button:first-child{background:rgba(127,208,255,.25)}
+#pn{position:fixed;right:12px;top:calc(env(safe-area-inset-top,0px) + 60px);width:min(390px,calc(100% - 24px));max-height:calc(100% - 190px);overflow:auto;padding:18px;z-index:4;animation:in .3s}
+@keyframes in{from{opacity:0;transform:translateX(20px)}}
+#pn h2{font:600 1.3rem Unbounded,sans-serif;margin:0 0 4px;padding-right:34px}#pn h4{margin:12px 0 6px}#pn p{margin:6px 0;color:#c9d8f0}#pn small,.sm{color:var(--m);font-size:12.5px}
+.x{position:absolute;right:12px;top:12px;padding:3px 9px}.gr{display:grid;grid-template-columns:1fr 1fr;gap:6px}.gr button{text-align:left;font-size:13px;padding:7px 9px}
+.st{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}.st div{background:rgba(255,255,255,.05);border-radius:8px;padding:6px 9px;font-size:12px;color:var(--m)}.st b{display:block;color:var(--t);font-size:14px}
+.qz button{display:block;width:100%;text-align:left;margin:5px 0}.ok{color:#8affb0}.no{color:#ff9a8a}
+#hud{position:fixed;left:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);padding:10px 14px;font:12px/1.6 ui-monospace,monospace;color:var(--m);z-index:4;min-width:210px}#hud b{color:var(--t);font-weight:400}
+#bar{position:fixed;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);padding:8px;display:flex;gap:6px;align-items:center;z-index:4;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 250px)}
+#bar input{width:80px;accent-color:#7fd0ff}
+#tip{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);transform:translateX(-50%);font-size:12px;color:var(--m);z-index:2;text-align:center;pointer-events:none;width:90%}
+#toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 110px);left:50%;transform:translate(-50%,-20px);opacity:0;padding:12px 20px;z-index:9;transition:.5s;pointer-events:none;text-align:center;border-color:var(--gold)}#toast.on{opacity:1;transform:translate(-50%,0)}
+#fall{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 90px);transform:translateX(-50%);width:min(560px,92%);padding:18px;z-index:6;text-align:center}
+#blk{position:fixed;inset:0;background:#000;z-index:8;display:grid;place-content:center;text-align:center;padding:30px;opacity:0;pointer-events:none;transition:opacity 2s}#blk.on{opacity:1;pointer-events:auto}#blk p{max-width:520px;margin:0 auto 20px;color:#c9d8f0}
+#tc{position:fixed;inset:auto 0 calc(env(safe-area-inset-bottom,0px) + 70px) 0;display:none;justify-content:space-between;align-items:flex-end;padding:0 14px;z-index:5;pointer-events:none}#tc>div{pointer-events:auto;display:grid;gap:6px}#tc button{width:54px;height:54px;padding:0;touch-action:none;user-select:none;-webkit-user-select:none;background:rgba(10,18,38,.6);backdrop-filter:blur(8px);font-size:13px}#tc button:active{background:rgba(127,208,255,.35)}
+.dp{grid-template-columns:repeat(3,54px)}.dp span{grid-column:2}
+.rt{grid-template-columns:repeat(2,54px)}
+body.m #tc{display:flex}body.m #hud{display:none}body.m #bar{max-width:100%;left:12px}body.m #tip{display:none}
+body.m #pn{top:calc(env(safe-area-inset-top,0px) + 60px);right:12px;left:12px;width:auto;max-height:38%}
+body.m #title{place-content:start center;padding-top:22vh}
+@media(max-width:700px){#hud{display:none}#bar{max-width:100%}#pn{max-height:46%}}
+</style></head><body>
+<canvas id="c"></canvas>
+<div id="ld"><div>COSMOS ODYSSEY<i><b id="lb"></b></i><small>Generating procedural universe</small></div></div>
+<div id="dv"><div class="glass"><h2>COSMOS ODYSSEY</h2><p>اختار الجهاز اللي بتلعب عليه · Choose your device</p><div class="ch"><button id="b-pc" onclick="setDev('pc')">💻 لابتوب / كمبيوتر<small>Laptop · keyboard &amp; mouse</small></button><button id="b-m" onclick="setDev('m')">📱 موبايل<small>Mobile · on-screen controls</small></button></div></div></div>
+<nav id="nv" class="glass"></nav>
+<div id="title" class="hid"><h1>COSMOS ODYSSEY</h1><p>Beyond Everything You Know</p><div><button onclick="go('solar')">START EXPLORATION</button><button onclick="menu()">EXPLORE THE UNIVERSE</button><button onclick="go('disc')">DISCOVERIES</button></div></div>
+<aside id="pn" class="glass" hidden></aside>
+<div id="hud" class="glass"></div>
+<div id="bar" class="glass"><select id="ds" onchange="dest(this.value)"></select><button onclick="cockpit=!cockpit">Camera (C)</button><button onclick="hudT()">HUD</button><button id="dvb" onclick="setDev(dev=='pc'?'m':'pc')">Controls</button><button id="mu" onclick="mute()">Sound on</button><input id="vol" type="range" min="0" max="100" value="40" aria-label="Volume" oninput="vol()"></div>
+<div id="tip">WASD move · Space up · Q down · Shift boost · C camera · E interact · drag to look · wheel to dolly</div>
+<div id="toast" class="glass"></div>
+<div id="fall" class="glass" hidden></div>
+<div id="blk"><div><h2 style="font-family:Unbounded">Signal lost</h2><p id="bt"></p><button onclick="safe()">Return to safe orbit</button></div></div>
+<div id="tc"><div class="dp"><button data-k="w" style="grid-column:2">W</button><button data-k="a">A</button><button data-k="s">S</button><button data-k="d">D</button></div><div class="rt"><button data-k="shift">Boost</button><button data-k=" ">Up</button><button data-k="q">Down</button><button onclick="interact()">E</button><button onclick="cockpit=!cockpit" style="grid-column:1/3;width:auto">Cam</button></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),V3=(x,y,z)=>new THREE.Vector3(x,y,z),PI=Math.PI,mob=matchMedia('(pointer:coarse)').matches;
+const R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:!mob});let pr=Math.min(devicePixelRatio,mob?1.5:2);R.setPixelRatio(pr);
+const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(60,1,.1,9000);
+function rs(){R.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}addEventListener('resize',rs);rs();
+S.add(new THREE.AmbientLight(0x2a3a66,.6));S.add(new THREE.PointLight(0xfff0d8,2.2,0,0));
+const gs=()=>(Math.random()+Math.random()+Math.random()+Math.random()-2)/2;
+const gt=(()=>{const k=document.createElement('canvas');k.width=k.height=128;const g=k.getContext('2d'),r=g.createRadialGradient(64,64,0,64,64,64);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.25,'rgba(255,255,255,.35)');r.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=r;g.fillRect(0,0,128,128);return new THREE.CanvasTexture(k)})();
+const glow=(c,s,o=1)=>{const m=new THREE.Sprite(new THREE.SpriteMaterial({map:gt,color:c,transparent:true,opacity:o,blending:THREE.AdditiveBlending,depthWrite:false}));m.scale.set(s,s,1);return m};
+function pts(n,f,sz,op=.9){const p=new Float32Array(n*3),c=new Float32Array(n*3),col=new THREE.Color();for(let i=0;i<n;i++){const q=f(i,col);p.set(q,i*3);c.set([col.r,col.g,col.b],i*3)}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(p,3));g.setAttribute('color',new THREE.BufferAttribute(c,3));return new THREE.Points(g,new THREE.PointsMaterial({size:sz,vertexColors:true,transparent:true,opacity:op,depthWrite:false,blending:THREE.AdditiveBlending}))}
+function clear(g){g.userData.upd=null;g.children.slice().forEach(o=>{g.remove(o);o.traverse(x=>{x.geometry&&x.geometry.dispose();x.material&&x.material.dispose()})})}
+const sky=new THREE.Group();S.add(sky);
+{const st=pts(mob?3000:6500,(i,c)=>{const r=3000+Math.random()*2500,u=Math.random()*2-1,a=Math.random()*PI*2,s=Math.sqrt(1-u*u);c.setHSL(Math.random()<.5?.6:.1,.5,.5+Math.random()*.45);return[r*s*Math.cos(a),r*u,r*s*Math.sin(a)]},1.6);st.material.size=1.6;st.material.sizeAttenuation=false;sky.add(st);
+['#2a4fd0','#7a3fc0','#1a8ab0','#c9983a','#3a3fa0','#6a2f90'].forEach((c,i)=>{const s=glow(c,2600,.2);s.position.set(Math.cos(i*1.1)*3400,(i%3-1)*1200,Math.sin(i*1.1)*3400);sky.add(s)})}
+function ptex(c,band,seed,spot){const k=document.createElement('canvas');k.width=256;k.height=128;const g=k.getContext('2d');let s=seed;const r=()=>(s=s*16807%2147483647)/2147483647;
+for(let y=0;y<128;y++){const t=band?(Math.sin(y*band+r()*.5)+1)/2:r();g.fillStyle=c[Math.floor(t*(c.length-.01))];g.fillRect(0,y,256,1)}
+if(!band){g.globalAlpha=.55;for(let i=0;i<700;i++){g.fillStyle=c[Math.floor(r()*c.length)];g.beginPath();g.arc(r()*256,r()*128,r()*7+1,0,7);g.fill()}}
+if(spot){g.globalAlpha=.9;g.fillStyle='#b5472f';g.beginPath();g.ellipse(170,84,16,8,0,0,7);g.fill()}
+const t=new THREE.CanvasTexture(k);return t}
+const atm=c=>new THREE.Mesh(new THREE.SphereGeometry(1,32,16),new THREE.ShaderMaterial({uniforms:{c:{value:new THREE.Color(c)}},vertexShader:'varying vec3 n,v;void main(){n=normalize(normalMatrix*normal);vec4 p=modelViewMatrix*vec4(position,1.);v=normalize(-p.xyz);gl_Position=projectionMatrix*p;}',fragmentShader:'uniform vec3 c;varying vec3 n,v;void main(){float f=pow(1.-abs(dot(n,v)),2.5);gl_FragColor=vec4(c,f*.9);}',transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+const gH=new THREE.SphereGeometry(1,64,32),gL=new THREE.SphereGeometry(1,16,8);
+const P=[
+['Mercury',.9,22,.9,['#8a8480','#6e6a66','#a39d96'],0,0,'4,879 km','57.9 million km','167 °C average','3.7 m/s²','0','Mercury has almost no air, so temperatures swing from about 430 °C by day to -180 °C at night.','The smallest planet and the closest to the Sun, covered in craters.'],
+['Venus',1.6,34,.7,['#d9b36c','#c99a52','#e8cf9a'],.35,'#ffd9a0','12,104 km','108.2 million km','464 °C','8.9 m/s²','0','Venus spins backwards compared with most planets, and one day there is longer than its year.','Thick carbon dioxide clouds trap heat, making Venus the hottest planet.'],
+['Earth',1.7,48,.6,['#1c4f8f','#1c4f8f','#2f7d4f','#3f8f5a','#eef3f7'],0,'#5aa8ff','12,742 km','149.6 million km','15 °C average','9.8 m/s²','1','About 71% of Earth\'s surface is covered by water.','Our home, the only place known to have life, in the Sun\'s habitable zone.'],
+['Mars',1.2,62,.48,['#b5532e','#9a4425','#c9693c','#7d3a22'],0,'#ff9a6a','6,779 km','227.9 million km','-65 °C average','3.7 m/s²','2','Olympus Mons on Mars is the tallest known volcano in the Solar System, about 22 km high.','A cold desert world. Iron-rich dust gives it a red color.'],
+['Jupiter',5,100,.26,['#c9a77c','#e9d8bd','#a9754d','#d8b48e','#8c5b3a'],.55,'#e8cfa8','139,820 km','778.5 million km','-110 °C (cloud tops)','24.8 m/s²','95+','The Great Red Spot is a storm wider than Earth that has lasted at least 150 years.','A gas giant more massive than all the other planets combined.'],
+['Saturn',4.2,140,.2,['#d9c08a','#e8d9ae','#bfa66f'],.5,'#f0dfb0','116,460 km','1.43 billion km','-140 °C (cloud tops)','10.4 m/s²','270+','Saturn is less dense than water, so a big enough bathtub would float it.','Famous for bright rings made of ice and rock particles.'],
+['Uranus',2.6,175,.14,['#9fd8de','#8accd4','#b2e3e6'],.2,'#a8eef0','50,724 km','2.87 billion km','-195 °C','8.7 m/s²','28+','Uranus is tilted about 98°, so it rolls around the Sun on its side.','An ice giant. Methane in its air gives it a pale cyan color.'],
+['Neptune',2.5,205,.11,['#2f5fd0','#3d72e6','#2a4fb0'],.3,'#6a9aff','49,244 km','4.50 billion km','-200 °C','11.2 m/s²','16','Neptune has the fastest winds in the Solar System, about 2,000 km/h.','A dark, cold ice giant, the farthest major planet from the Sun.']];
+const QZ={Earth:['Which statement best describes Earth\'s place in the Solar System?',['Third planet from the Sun, where liquid water can exist','Closest planet to the Sun','A moon of Jupiter'],0,'Earth orbits at a distance where water can stay liquid on the surface, which is key for life.'],
+Mars:['Why does Mars look red?',['Its oceans reflect sunset light','Iron-rich dust that has rusted','It is covered in red ice'],1,'Iron minerals in Martian soil oxidize, like rust, giving the surface its red-orange color.'],
+Jupiter:['What is Jupiter\'s Great Red Spot?',['A giant long-lived storm','A volcano','One of its moons'],0,'It is an enormous storm of swirling gas, wider than Earth.'],
+Saturn:['Why does Saturn have rings?',['Ice and rocky particles orbiting the planet','Clouds surrounding the planet','A solid surface structure'],0,'The rings are countless pieces of ice and rock, from tiny grains to house-sized chunks, all orbiting Saturn.'],
+gal:['What is the Milky Way?',['A single giant star','A galaxy with hundreds of billions of stars','A nebula inside our Sun'],1,'The Milky Way is a barred spiral galaxy. Our Sun is one of its hundreds of billions of stars.']};
+const sunM=new THREE.Mesh(new THREE.SphereGeometry(10,48,24),new THREE.MeshBasicMaterial({color:0xffd27a}));sunM.add(glow(0xffa040,70,.9),glow(0xffe0a0,30));S.add(sunM);
+const BODIES=[{n:'Sun',r:10,mesh:sunM,a:['1,392,700 km','0 (center)','5,500 °C surface','274 m/s²','0','The Sun holds 99.8% of the Solar System\'s mass.','A star: a ball of hot gas powered by nuclear fusion in its core.']}],PL=[];
+P.forEach((d,i)=>{const piv=new THREE.Group(),m=new THREE.Mesh(gL,new THREE.MeshStandardMaterial({map:ptex(d[4],d[5],i*77+5,d[0]=='Jupiter'),roughness:.9}));m.scale.setScalar(d[1]);m.position.x=d[2];piv.rotation.y=i*1.7;piv.add(m);
+if(d[6]){const a=atm(d[6]);a.scale.setScalar(1.12);m.add(a)}
+if(d[0]=='Saturn'){const rg=new THREE.Mesh(new THREE.RingGeometry(1.45,2.5,64),new THREE.MeshBasicMaterial({color:0xcdb98a,transparent:true,opacity:.7,side:2}));rg.rotation.x=1.9;m.add(rg)}
+const pts_=[];for(let k=0;k<=128;k++)pts_.push(V3(Math.cos(k/128*PI*2)*d[2],0,Math.sin(k/128*PI*2)*d[2]));
+S.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts_),new THREE.LineBasicMaterial({color:0x5a8acf,transparent:true,opacity:.25})));
+S.add(piv);PL.push({piv,m,sp:d[3]*.012,rot:.3+i*.05});BODIES.push({n:d[0],r:d[1],mesh:m,a:d.slice(7)})});
+const earth=PL[2].m,wp=m=>m.getWorldPosition(V3(0,0,0));
+const H=V3(500,-40,900),hero=new THREE.Mesh(gH,new THREE.MeshStandardMaterial({map:ptex(['#1c4f8f','#1c4f8f','#2f7d4f','#d9d2b0','#eef3f7'],0,99),roughness:.8}));hero.scale.setScalar(38);hero.position.copy(H);const ha=atm('#5aa8ff');ha.scale.setScalar(1.1);hero.add(ha);S.add(hero);
+const hl=new THREE.PointLight(0xffeedd,3.5,500,1);hl.position.set(H.x+160,H.y+60,H.z+110);S.add(hl);
+const IC=[...Array(5)].map(()=>[gs()*100,gs()*60,gs()*100]);
+function galP(t,o,Rd,n){const c1=new THREE.Color(o.i||'#ffd9a0'),c2=new THREE.Color(o.o||'#8fb4ff');return pts(n,(i,col)=>{let x,y,z,a,r;const f=o.f||.06,A=o.a||2;
+if(t=='spiral'||t=='edge'){if(Math.random()<(o.b||.25)){x=gs()*Rd*.2;y=gs()*Rd*.12;z=gs()*Rd*.2}else{r=Math.pow(Math.random(),.7)*Rd;a=r/Rd*(o.tw??3)*PI+Math.floor(Math.random()*A)*2*PI/A+gs()*(.5-.3*r/Rd);x=Math.cos(a)*r;z=Math.sin(a)*r;y=gs()*Rd*f*(1-.5*r/Rd)}}
+else if(t=='elliptical'||t=='dwarf'){x=gs()*Rd*.7;y=gs()*Rd*.45;z=gs()*Rd*.55}
+else if(t=='irregular'){const c=IC[i%5];x=c[0]+gs()*Rd*.3;y=c[1]+gs()*Rd*.2;z=c[2]+gs()*Rd*.3}
+else{if(Math.random()<.12){x=gs()*Rd*.12;y=gs()*Rd*.1;z=gs()*Rd*.12}else{a=Math.random()*PI*2;r=Rd*(.75+gs()*.07);x=Math.cos(a)*r;z=Math.sin(a)*r;y=gs()*Rd*.03}}
+col.copy(c1).lerp(c2,Math.min(1,Math.hypot(x,z)/Rd)).multiplyScalar(.6+Math.random()*.6);return[x,y,z]},1.6)}
+const ZB=galP('spiral',{a:2,tw:3},150,mob?4000:9000);ZB.scale.setScalar(6);ZB.position.set(-1500,700,-3600);ZB.rotation.set(.9,0,.3);S.add(ZB);
+const GP=V3(1500,0,-800),ZG=new THREE.Group();ZG.position.copy(GP);S.add(ZG);
+const GL=[['Milky Way','spiral',{a:4,tw:3.2,b:.3},'Our home: a barred spiral about 100,000 light-years across with 100–400 billion stars. The Sun sits in a minor arm about 26,000 light-years from the center.'],
+['Andromeda','spiral',{a:2,tw:2.4,b:.3,o:'#9fb8ff'},'The nearest large galaxy, 2.5 million light-years away. It is heading toward the Milky Way; a merger is expected in roughly 4–5 billion years.'],
+['Triangulum','spiral',{a:2,tw:1.6,b:.1,o:'#a0c4ff'},'A small spiral about 2.7 million light-years away with roughly 40 billion stars. It holds NGC 604, a giant stellar nursery.'],
+['Whirlpool','spiral',{a:2,tw:4.2,b:.2},'M51, 23 million light-years away. Its clear spiral arms are shaped by a close pass with a smaller companion galaxy.'],
+['Sombrero','edge',{b:.4,f:.02,a:1,tw:0},'M104, about 29 million light-years away. Seen almost edge-on, it has a bright bulge and a dark dust lane.'],
+['M87 (Elliptical)','elliptical',{i:'#ffd8a0',o:'#ffb070'},'A giant elliptical galaxy 54 million light-years away. Ellipticals are rounder and older, with little new star formation. Its central black hole was the first ever imaged, in 2019.'],
+['Large Magellanic Cloud (Irregular)','irregular',{i:'#bcd4ff',o:'#ff9ac8'},'An irregular satellite of the Milky Way, 160,000 light-years away. It hosts the Tarantula Nebula, a very active star-forming region.'],
+['M32 (Dwarf)','dwarf',{i:'#ffe0b0',o:'#ffc080'},'A compact dwarf elliptical orbiting Andromeda. Dwarf galaxies hold far fewer stars than large ones, but are the most common type.'],
+['Hoag\'s Object (Ring)','ring',{i:'#ffd070',o:'#7ab0ff'},'A rare ring galaxy about 600 million light-years away: a bright core circled by a ring of young blue stars, with a dark gap between.']];
+function buildG(i){const e=GL[i];clear(ZG);const Rd=e[1]=='dwarf'?60:150,p=galP(e[1],e[2],Rd,mob?5000:12000);ZG.add(p);ZG.rotation.set(e[1]=='edge'?.12:.5,0,.15);
+if(e[1]=='spiral'||e[1]=='irregular'){const a=p.geometry.attributes.position.array,n=a.length/3;for(let k=0;k<16;k++){const j=Math.floor(Math.random()*n),s=glow(k%2?0xff6aa8:0x7ab4ff,k%2?14:9,.6);s.position.set(a[j*3],a[j*3+1],a[j*3+2]);ZG.add(s)}}return Rd}
+const B=V3(-1400,0,-700),bh=new THREE.Group();bh.position.copy(B);S.add(bh);const bu={t:{value:0}};
+const dmat=(i,o,k)=>new THREE.ShaderMaterial({uniforms:{t:bu.t,k:{value:k},i:{value:i},o:{value:o}},transparent:true,side:2,depthWrite:false,blending:THREE.AdditiveBlending,vertexShader:'varying vec2 p;void main(){p=position.xy;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+fragmentShader:'uniform float t,k,i,o;varying vec2 p;void main(){float r=length(p),a=atan(p.y,p.x),q=clamp((r-i)/(o-i),0.,1.);vec3 c=mix(vec3(.75,.88,1.),vec3(1.,.82,.45),smoothstep(0.,.3,q));c=mix(c,vec3(1.,.38,.08),smoothstep(.3,.9,q));float s=.75+.25*sin(a*9.-t*2./(q*.8+.3)+q*20.),d=1.+.6*cos(a-1.2),al=smoothstep(0.,.06,q)*(1.-smoothstep(.5,1.,q))*s*d*k;gl_FragColor=vec4(c*al*1.7,al);}'});
+const disk=new THREE.Mesh(new THREE.RingGeometry(9,36,160,4),dmat(9,36,1));disk.rotation.set(-PI/2+.2,0,.1);
+const halo=new THREE.Mesh(new THREE.RingGeometry(6.5,16,128,2),dmat(6.5,16,.9)),pho=new THREE.Mesh(new THREE.RingGeometry(6.5,7.3,128,1),new THREE.MeshBasicMaterial({color:0xfff2d0,transparent:true,opacity:.8,blending:THREE.AdditiveBlending,side:2,depthWrite:false}));
+bh.add(new THREE.Mesh(new THREE.SphereGeometry(6.4,48,24),new THREE.MeshBasicMaterial({color:0})),disk,halo,pho,glow(0xff9040,90,.3));
+const HS=[['Event Horizon',[0,8,40],'The boundary beyond which nothing, not even light, can return. It is not a surface but a point of no return. For a black hole with the Sun\'s mass, it would be about 3 km in radius.'],
+['Singularity',[0,40,80],'At the center, general relativity predicts infinite density. That really signals that the theory breaks down there; a theory of quantum gravity is needed. Nobody outside can ever observe it.'],
+['Accretion Disk',[55,14,55],'Gas and dust spiral inward, heated by friction to millions of degrees. The disk is matter just before it falls in, not the black hole itself. Colors here are artistic: real disks vary and are often seen in X-rays.'],
+['Photon Sphere',[0,10,28],'A region about 1.5 times the horizon radius (for a non-spinning black hole) where light can orbit. These orbits are unstable: photons soon escape or fall in. It forms the bright thin ring around the shadow.'],
+['Gravitational Lensing',[0,6,110],'Gravity bends light, so the far side of the disk appears to arc above and below the shadow, and background stars are shifted. This view approximates it with a halo ring; it is not ray-traced and the star field is not distorted.']];
+const ship=new THREE.Group(),sm=new THREE.MeshStandardMaterial({color:0xaab8c8,metalness:.8,roughness:.35});
+const hull=new THREE.Mesh(new THREE.ConeGeometry(.22,1.3,8),sm);hull.rotation.x=-PI/2;const wing=new THREE.Mesh(new THREE.BoxGeometry(1.2,.03,.45),sm);wing.position.z=.25;const fin=new THREE.Mesh(new THREE.BoxGeometry(.03,.25,.3),sm);fin.position.set(0,.12,.35);
+const cp=new THREE.Mesh(new THREE.SphereGeometry(.1,12,8),new THREE.MeshBasicMaterial({color:0x66ccff}));cp.scale.set(1,.7,2);cp.position.set(0,.1,-.1);
+const eng=[-.4,.4].map(x=>{const g=glow(0x5ac8ff,.7);g.position.set(x,0,.6);ship.add(g);return g});ship.add(hull,wing,fin,cp);S.add(ship);
+const TN=50,tp=new Float32Array(TN*3),tcl=new Float32Array(TN*3);for(let i=0;i<TN;i++){const b=Math.pow(1-i/TN,2);tcl.set([.35*b,.8*b,b],i*3)}
+const tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.BufferAttribute(tp,3));tg.setAttribute('color',new THREE.BufferAttribute(tcl,3));
+const trail=new THREE.Points(tg,new THREE.PointsMaterial({size:.14,vertexColors:true,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));trail.frustumCulled=false;S.add(trail);
+const DP=V3(300,0,-1700),ZD=new THREE.Group();ZD.position.copy(DP);S.add(ZD);
+const mkStar=(c,r)=>{const g=new THREE.Group();g.add(new THREE.Mesh(new THREE.SphereGeometry(r,32,16),new THREE.MeshBasicMaterial({color:c})),glow(c,r*7,.8));return g};
+const DE=[['Nebulas','Orion Nebula','neb',['#ff7aa8','#6aa8ff'],'A stellar nursery about 1,344 light-years away, visible to the naked eye in Orion\'s sword. New stars are forming inside its gas.',110],
+['Nebulas','Eagle Nebula','neb',['#ffb35a','#7a6aff'],'About 7,000 light-years away. It contains the Pillars of Creation, towers of gas and dust where stars are born.',110],
+['Nebulas','Crab Nebula','neb',['#7fd0ff','#ff8a5a'],'The remains of a supernova seen from Earth in 1054 CE, about 6,500 light-years away. A pulsar spins at its center.',100],
+['Nebulas','Carina Nebula','neb',['#ff9a6a','#4aa8ff'],'About 8,500 light-years away and larger than Orion. It contains Eta Carinae, a very massive and unstable star.',120],
+['Stars','Red Giant','star',['#ff5a3a',6],'An aging star swollen to tens or hundreds of times the Sun\'s width and cooled to a red glow. The Sun will become one in about 5 billion years.',32],
+['Stars','White Dwarf','star',['#cfe6ff',1],'The hot, dense core left by a Sun-like star. It is about Earth-sized but has roughly the Sun\'s mass, and cools slowly over billions of years.',10],
+['Stars','Neutron Star','star',['#9fd0ff',.8],'A collapsed star only ~20 km wide yet heavier than the Sun. A teaspoon of its material would weigh billions of tonnes.',8],
+['Stars','Pulsar','pulsar',[1],'A rotating neutron star whose beams sweep past Earth like a lighthouse, giving regular pulses from milliseconds to seconds apart.',45],
+['Stars','Supernova','nova',[],'The explosion of a massive star at the end of its life. It can briefly outshine a whole galaxy and scatters elements like iron and oxygen into space.',90],
+['Stars','Blue Supergiant','star',['#7ab4ff',9],'A very hot, bright, massive star. Rigel in Orion is one. They live only a few million years before exploding.',36],
+['Exoplanets','TRAPPIST-1','sys',['#ff6a3a',2.2,[[.5,6,'#c9a77c'],[.55,8.5,'#9aa9c9'],[.4,11.5,'#6a9a8a'],[.5,15,'#4a8acf'],[.55,19,'#7ab08a'],[.65,24,'#c97a5a'],[.35,30,'#cfcfdf']]],'A small red dwarf 40 light-years away with seven Earth-sized planets. Three orbit where liquid water could exist. Appearance here is imagined.',55],
+['Exoplanets','Kepler-452b','sys',['#ffe9a0',4,[[1.7,22,'#5a8a6a']]],'About 1,800 light-years away and roughly 60% wider than Earth, orbiting a Sun-like star every 385 days. Whether it is rocky is unknown; its look here is imagined.',50],
+['Exoplanets','Proxima Centauri b','sys',['#ff5a3a',2.5,[[1.2,12,'#a06a4a']]],'The nearest known exoplanet, 4.2 light-years away. It orbits in its star\'s habitable zone but is blasted by flares, so life is uncertain. Look imagined.',40],
+['Phenomena','Solar Flares','flare',['#ffd070',6],'Sudden bursts of energy from tangled magnetic fields on the Sun. Strong flares can disturb radio signals and satellites on Earth.',30],
+['Phenomena','Gravitational Waves','wave',[],'Ripples in space-time made when massive objects such as black holes merge. LIGO first detected them in 2015.',80],
+['Phenomena','Meteor Shower','meteor',[],'Streaks of light seen when Earth passes through dust left by comets. The grains burn up about 100 km above the ground.',70],
+['Phenomena','Cosmic Microwave Background','cmb',[],'The oldest light in the universe, released about 380,000 years after the Big Bang. Tiny temperature differences seeded galaxies. Colors here are exaggerated.',0]];
+function buildD(i){const e=DE[i],k=e[2],a=e[3];clear(ZD);let u=null;
+if(k=='neb'){const c1=new THREE.Color(a[0]),c2=new THREE.Color(a[1]);ZD.add(pts(mob?3000:6000,(j,c)=>{c.copy(c1).lerp(c2,Math.random()).multiplyScalar(.5+Math.random()*.5);return[gs()*60,gs()*30,gs()*50]},3,.6));ZD.add(pts(80,(j,c)=>{c.set(0xffffff);return[gs()*50,gs()*25,gs()*40]},2.5,1));for(let j=0;j<7;j++){const s=glow(j%2?a[0]:a[1],70,.22);s.position.set(gs()*40,gs()*15,gs()*30);ZD.add(s)}}
+else if(k=='star'||k=='flare'){const s=mkStar(a[0],a[1]);ZD.add(s);if(k=='flare'){const arcs=[];for(let j=0;j<6;j++){const m=new THREE.Mesh(new THREE.TorusGeometry(a[1]*.6,a[1]*.07,6,20,PI),new THREE.MeshBasicMaterial({color:0xff9a40}));const n=V3(gs(),gs(),gs()).normalize();m.position.copy(n).multiplyScalar(a[1]);m.quaternion.setFromUnitVectors(V3(0,1,0),n);m.rotateY(Math.random()*PI);ZD.add(m);arcs.push(m)}u=(dt,t)=>arcs.forEach((m,j)=>m.scale.setScalar(1+.3*Math.sin(t*2+j)))}}
+else if(k=='pulsar'){ZD.add(mkStar('#bfe0ff',1));const sp=new THREE.Group(),bm=new THREE.Group(),mat=new THREE.MeshBasicMaterial({color:0x7fb8ff,transparent:true,opacity:.25,side:2,depthWrite:false,blending:THREE.AdditiveBlending});const c1=new THREE.Mesh(new THREE.ConeGeometry(7,40,24,1,true),mat),c2=c1.clone();c1.position.y=20;c1.rotation.x=PI;c2.position.y=-20;bm.add(c1,c2);bm.rotation.z=.7;sp.add(bm);ZD.add(sp);u=dt=>sp.rotation.y+=dt*4}
+else if(k=='nova'){ZD.add(mkStar('#fff0d0',3));const sh=pts(2500,(j,c)=>{const q=V3(gs(),gs(),gs()).normalize();c.set(j%3?'#ff9a4a':'#7ab4ff');return[q.x,q.y,q.z]},2.5,1);ZD.add(sh);u=(dt,t)=>{const p=(t%8)/8;sh.scale.setScalar(4+p*70);sh.material.opacity=1-p}}
+else if(k=='sys'){ZD.add(mkStar(a[0],a[1]));const pv=[];a[2].forEach((p,j)=>{const g=new THREE.Group(),m=new THREE.Mesh(gL,new THREE.MeshStandardMaterial({color:p[2],roughness:.8}));m.scale.setScalar(p[0]);m.position.x=p[1];g.rotation.y=j*2;g.add(m);ZD.add(g);pv.push([g,1/Math.sqrt(p[1])]);const q=[];for(let n=0;n<=64;n++)q.push(V3(Math.cos(n/64*PI*2)*p[1],0,Math.sin(n/64*PI*2)*p[1]));ZD.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(q),new THREE.LineBasicMaterial({color:0x5a8acf,transparent:true,opacity:.3})))});u=dt=>pv.forEach(p=>p[0].rotation.y+=dt*p[1]*1.5)}
+else if(k=='wave'){const o=new THREE.Group(),s1=mkStar('#9fd0ff',2.5),s2=mkStar('#ffb070',2.5);o.add(s1,s2);ZD.add(o);const rg=[];for(let j=0;j<6;j++){const m=new THREE.Mesh(new THREE.RingGeometry(.97,1,96),new THREE.MeshBasicMaterial({color:0x7fe0ff,transparent:true,opacity:.8,side:2,blending:THREE.AdditiveBlending,depthWrite:false}));m.rotation.x=-PI/2;ZD.add(m);rg.push(m)}u=(dt,t)=>{o.rotation.y+=dt*3;s1.position.x=5;s2.position.x=-5;rg.forEach((m,j)=>{const p=((t*.25+j/6)%1);m.scale.setScalar(6+p*80);m.material.opacity=(1-p)*.8})}}
+else if(k=='meteor'){const n=70,pa=new Float32Array(n*6),sp=[];for(let j=0;j<n;j++){const x=gs()*70,y=gs()*25+10,z=gs()*60;pa.set([x,y,z,x-6,y+2.4,z],j*6);sp.push(25+Math.random()*30)}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pa,3));ZD.add(new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:0xffe0b0,transparent:true,opacity:.85})));
+const pl=new THREE.Mesh(gH,new THREE.MeshStandardMaterial({map:ptex(['#1c4f8f','#2f7d4f','#eef3f7'],0,7),roughness:.8}));pl.scale.setScalar(90);pl.position.y=-105;const am=atm('#5aa8ff');am.scale.setScalar(1.06);pl.add(am);ZD.add(pl);
+u=dt=>{for(let j=0;j<n;j++){const d=sp[j]*dt;for(let q=0;q<2;q++){pa[j*6+q*3]+=d;pa[j*6+q*3+1]-=d*.4}if(pa[j*6]>80){pa[j*6]-=160;pa[j*6+3]-=160;pa[j*6+1]+=60;pa[j*6+4]+=60}}g.attributes.position.needsUpdate=true}}
+else if(k=='cmb'){const kc=document.createElement('canvas');kc.width=512;kc.height=256;const x=kc.getContext('2d');x.fillStyle='#2a4a9a';x.fillRect(0,0,512,256);const cs=['#ff8a3a','#ffd070','#3a6aff','#1e2f7a'];for(let j=0;j<1400;j++){x.globalAlpha=.3;x.fillStyle=cs[j%4];x.beginPath();x.arc(Math.random()*512,Math.random()*256,3+Math.random()*13,0,7);x.fill()}ZD.add(new THREE.Mesh(new THREE.SphereGeometry(70,48,24),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(kc),side:THREE.BackSide})))}
+ZD.userData.upd=u;return e[5]}
+// state + audio
+let Z='home',intro=true,cockpit=false,W=null,yaw=2.4,pitch=-.1,sel='none',lostOn=false,drag=0,mvd=0,hudOn=true,fi=-1,introT=0,dev=null;const vel=V3(0,0,0),K={},seen=new Set();let AC,mg,eg,muted=false,builtG=-1;
+function aud(){if(AC)return;AC=new(window.AudioContext||window.webkitAudioContext)();mg=AC.createGain();vol();mg.connect(AC.destination);const lp=AC.createBiquadFilter();lp.frequency.value=500;lp.connect(mg);
+[55,82.5,110.3,164.9].forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain(),l=AC.createOscillator(),lg=AC.createGain();o.type=i%2?'sine':'triangle';o.frequency.value=f;g.gain.value=.07;l.frequency.value=.05+i*.03;lg.gain.value=.04;l.connect(lg);lg.connect(g.gain);o.connect(g);g.connect(lp);o.start();l.start()});
+const b=AC.createBuffer(1,AC.sampleRate*2,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const ns=AC.createBufferSource();ns.buffer=b;ns.loop=true;const f=AC.createBiquadFilter();f.frequency.value=220;eg=AC.createGain();eg.gain.value=0;ns.connect(f);f.connect(eg);eg.connect(mg);ns.start()}
+function beep(f=660,d=.18){if(!AC)return;const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;g.gain.setValueAtTime(.12,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.connect(g);g.connect(mg);o.start();o.stop(AC.currentTime+d)}
+function vol(){if(mg)mg.gain.value=muted?0:$('#vol').value/100}function mute(){aud();muted=!muted;$('#mu').textContent=muted?'Sound off':'Sound on';vol()}
+addEventListener('pointerdown',()=>aud(),{once:true});
+// ui
+function toast(t){const e=$('#toast');e.innerHTML=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),3800)}
+function showP(h){const p=$('#pn');p.innerHTML='<button class=x onclick="hideP()">✕</button>'+h;p.hidden=false;p.style.animation='none';p.offsetWidth;p.style.animation=''}function hideP(){$('#pn').hidden=true}
+function hudT(){hudOn=!hudOn;$('#hud').classList.toggle('hid',!hudOn)}
+// device choice
+function setDev(d){const first=!dev;dev=d;document.body.classList.toggle('m',d=='m');$('#dv').hidden=true;if(first&&Z=='home')$('#title').classList.remove('hid');
+toast(d=='m'?'<b>Mobile controls on</b><br>Left pad: move · Drag the screen: look<br>Boost / Up / Down / E on the right':'<b>Laptop controls on</b><br>WASD move · Space/Q up/down · Shift boost · drag to look')}
+if(mob)$('#b-m').style.borderColor='var(--a)';else $('#b-pc').style.borderColor='var(--a)';
+const NAV=[['home','HOME'],['solar','SOLAR SYSTEM'],['gal','GALAXIES'],['bh','BLACK HOLES'],['deep','DEEP SPACE'],['disc','DISCOVERIES']];
+$('#nv').innerHTML=NAV.map(n=>`<button data-z="${n[0]}" onclick="go('${n[0]}')">${n[1]}</button>`).join('');
+$('#ds').innerHTML='<option value="">Select destination…</option>'+BODIES.map((b,i)=>`<option value="b:${i}">${b.n}</option>`).join('')+'<option value="z:gal">Galaxy Explorer</option><option value="z:bh">Black Hole</option><option value="z:deep">Deep Space</option><option value="z:home">Home view</option>';
+function dest(v){if(!v)return;const[a,b]=v.split(':');if(a=='b'){go('solar',true);fly(+b)}else go(b);$('#ds').value=''}
+function menu(){showP('<h2>Explore the universe</h2><p class=sm>Everything is unlocked. Choose a destination.</p><div class=gr><button onclick="go(\'solar\')">Solar System</button><button onclick="go(\'gal\')">Galaxies</button><button onclick="go(\'bh\')">Black Hole</button><button onclick="go(\'deep\')">Deep Space</button></div>')}
+function discP(){const t=BODIES.length+GL.length+HS.length+DE.length;showP(`<h2>Discoveries</h2><p class=sm>${seen.size} of ${t} found</p>`+[['Solar System',BODIES.map(b=>b.n)],['Galaxies',GL.map(g=>g[0])],['Black hole',HS.map(h=>h[0])],['Deep space',DE.map(d=>d[1])]].map(g=>`<h4>${g[0]}</h4><p class=sm>${g[1].map(n=>(seen.has(n)?'✓ ':'○ ')+n).join('<br>')}</p>`).join(''))}
+// quiz (optional knowledge check)
+function qz(k){const q=QZ[k];return`<div class=qz><h4>Knowledge check</h4><p>${q[0]}</p>${q[1].map((o,i)=>`<button onclick="ans('${k}',${i})">${'ABC'[i]}. ${o}</button>`).join('')}<p id=qe></p></div>`}
+function ans(k,i){const q=QZ[k],ok=i==q[2],e=$('#qe');e.className=ok?'ok':'no';e.textContent=ok?'Correct! '+q[3]:'Not quite. Read the facts above and try again.';beep(ok?880:220)}
+function warp(p,l,d=2.8,cb){const dv=l.clone().sub(p),yb=Math.atan2(-dv.x,-dv.z),pb=Math.asin(dv.y/dv.length());W={a:ship.position.clone(),b:p.clone(),t:0,d,ya:yaw,yb:yaw+Math.atan2(Math.sin(yb-yaw),Math.cos(yb-yaw)),pa:pitch,pb,cb};beep(300,.6);vel.set(0,0,0)}
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+function go(z,keep){Z=z;document.querySelectorAll('#nv button').forEach(b=>b.classList.toggle('on',b.dataset.z==z));$('#title').classList.toggle('hid',z!='home'||!dev);$('#blk').classList.remove('on');$('#fall').hidden=true;lostOn=false;
+intro=z=='home';if(z=='home'){hideP();warp(H.clone().add(V3(60,12,0)),H,3.5,()=>{intro=true});intro=false;return}
+if(z=='solar'){if(!keep)warp(wp(earth).add(V3(0,5,16)),wp(earth),3,()=>{});sel='none';showP('<h2>Solar System</h2><p class=sm>Click a planet in space, or choose one. <b>Scale note:</b> planet sizes and orbit distances are compressed so they are easy to see. Real values are shown in each panel.</p><div class=gr>'+BODIES.map((b,i)=>`<button onclick="fly(${i})">${b.n}</button>`).join('')+'</div>')}
+if(z=='gal'){hideP();const R_=buildG(0);builtG=0;warp(GP.clone().add(V3(0,R_*.9,R_*2.4)),GP,3.5,()=>{});galP_(0)}
+if(z=='bh'){warp(B.clone().add(V3(0,25,160)),B,3.5);bhP()}
+if(z=='deep'){deepP();selD(0)}
+if(z=='disc'){discP()}}
+function body(i){const b=BODIES[i],a=b.a;seen.add(b.n);sel=b.n;beep(720);
+showP(`<h2>${b.n}</h2><div class=st><div>Diameter<b>${a[0]}</b></div><div>Distance from Sun<b>${a[1]}</b></div><div>Avg. temperature<b>${a[2]}</b></div><div>Gravity<b>${a[3]}</b></div><div>Moons<b>${a[4]}</b></div></div><p>${a[6]}</p><h4>Did you know?</h4><p>${a[5]}</p><p class=sm>Visual scale only: in this game the ${b.n} is drawn far closer and smaller than real distances.</p><div class=gr><button onclick="fly(${i})">Fly here</button><button onclick="land(${i})">LANDING EXPERIENCE</button></div><p class=sm>Landing is a low-altitude flyby over the procedural surface, not a walkable scene.${i>4||i==0?' This body has no solid surface to land on, so you hover above the cloud tops or surface.':''}</p>${QZ[b.n]?qz(b.n):''}<button onclick="go('solar',true)" style="margin-top:8px">All bodies</button>`)}
+function fly(i){const b=BODIES[i],p=wp(b.mesh);warp(p.clone().add(V3(0,b.r*.6+1,b.r*2.6+3)),p,2.8,()=>{});body(i)}
+function land(i){const b=BODIES[i],p=wp(b.mesh);warp(p.clone().add(V3(0,b.r*1.12,b.r*.3)),p.clone().add(V3(0,b.r*.9,-b.r*3)),3.5);}
+function galP_(i){const e=GL[i];seen.add(e[0]);sel=e[0];showP(`<h2>${e[0]}</h2><p class=sm>Type: ${e[1]}</p><p>${e[3]}</p><p class=sm>3D shapes are procedural approximations built from points. Pink glows mark star-forming nurseries and blue glows mark young star clusters; their placement is artistic. Fly around to explore the structure.</p><div class=gr>${GL.map((g,j)=>`<button onclick="selG(${j})">${g[0]}</button>`).join('')}</div>${i==0?qz('gal'):''}`)}
+function selG(i){const R_=buildG(i);warp(GP.clone().add(V3(0,R_*.9,R_*2.4)),GP,3.2);galP_(i)}
+function bhP(t){showP(`<h2>Black hole</h2><p class=sm>Fly in with the ship. Gravity pulls harder near the center, and there is no way back after the event horizon. Visuals are an artistic approximation, not a ray-traced simulation.</p><div class=gr>${HS.map((h,i)=>`<button onclick="hot(${i})">${h[0]}</button>`).join('')}</div><div id=hs>${t||''}</div><button style="margin-top:10px" onclick="fall()">What happens if you fall in?</button>`)}
+function hot(i){const h=HS[i];seen.add(h[0]);warp(B.clone().add(V3(...h[1])),B,2.8);beep(540);bhP(`<h4>${h[0]}</h4><p>${h[2]}</p>`)}
+const FS=['Far away you feel nothing unusual. Gravity grows stronger as you approach, as with any very massive object.','<b>Time dilation.</b> To a distant observer your clock slows and your light reddens and fades as you near the horizon. To you, time feels normal.','<b>Tidal forces and spaghettification.</b> Gravity pulls harder on your feet than your head. Near a stellar-mass black hole the stretching would be deadly before you reach the horizon.','<b>The event horizon.</b> Past this boundary every possible path leads inward. A distant observer never sees you cross it; your image just fades.','<b>Why light cannot escape.</b> Inside the horizon, the future points toward the center. Nothing, not even light, can get back out. Nobody can report what happens next, so this simulation ends here.'];
+const FD=[150,95,55,28,16];
+function fall(){fi=0;fstep()}
+function fstep(){const f=$('#fall');f.hidden=false;hideP();warp(B.clone().add(V3(.5,.12,1).normalize().multiplyScalar(FD[fi])),B,4.5);f.innerHTML=`<p>${FS[fi]}</p><button onclick="${fi<4?'fi++;fstep()':'fend()'}">${fi<4?'Continue':'Finish'}</button>`}
+function fend(){$('#fall').hidden=true;fi=-1;lost('The simulation ends at the event horizon. We do not show anyone surviving beyond it, because nothing that crosses can send information back.')}
+function lost(m){if(lostOn)return;lostOn=true;$('#bt').textContent=m||'Telemetry lost at the event horizon. Nothing that crosses it can send a signal back.';$('#blk').classList.add('on')}
+function safe(){$('#blk').classList.remove('on');lostOn=false;go('bh')}
+function deepP(){const cats=[...new Set(DE.map(d=>d[0]))];showP('<h2>Deep space</h2><div id=dd></div>'+cats.map(c=>`<h4>${c}</h4><div class=gr>${DE.map((d,i)=>d[0]==c?`<button onclick="selD(${i})">${d[1]}</button>`:'').join('')}</div>`).join(''))}
+function selD(i){const e=DE[i],d=buildD(i);seen.add(e[1]);sel=e[1];warp(DP.clone().add(V3(0,d*.12,d)),DP,3);beep(600);deepP();$('#dd').innerHTML=`<h4>${e[1]}</h4><p>${e[4]}</p>`}
+function interact(){let bi=-1,bd=1e9;BODIES.forEach((b,i)=>{const d=ship.position.distanceTo(wp(b.mesh))-b.r;if(d<bd){bd=d;bi=i}});if(bd<25)return body(bi);if(ship.position.distanceTo(B)<200)return bhP();toast('Nothing in range. Fly closer to a planet or the black hole.')}
+// input
+addEventListener('keydown',e=>{const k=e.key.toLowerCase();K[k]=1;if(k=='c')cockpit=!cockpit;if(k=='e')interact();if(k==' ')e.preventDefault()});addEventListener('keyup',e=>K[e.key.toLowerCase()]=0);
+document.querySelectorAll('#tc [data-k]').forEach(b=>{const k=b.dataset.k;b.addEventListener('pointerdown',e=>{e.preventDefault();K[k]=1;b.setPointerCapture&&b.setPointerCapture(e.pointerId)});['pointerup','pointercancel','pointerleave'].forEach(t=>b.addEventListener(t,()=>K[k]=0))});
+const cv=$('#c'),ray=new THREE.Raycaster(),mp=new THREE.Vector2();
+cv.addEventListener('pointerdown',e=>{drag=1;mvd=0});addEventListener('pointerup',()=>drag=0);addEventListener('pointercancel',()=>drag=0);
+addEventListener('pointermove',e=>{if(drag&&!intro&&!W){mvd+=Math.abs(e.movementX)+Math.abs(e.movementY);yaw-=e.movementX*.003;pitch=Math.max(-1.4,Math.min(1.4,pitch-e.movementY*.003))}});
+cv.addEventListener('pointerup',e=>{if(mvd>6||W)return;mp.set(e.clientX/innerWidth*2-1,-e.clientY/innerHeight*2+1);ray.setFromCamera(mp,cam);const h=ray.intersectObjects(BODIES.map(b=>b.mesh),false)[0];if(h){const i=BODIES.findIndex(b=>b.mesh==h.object);Z='solar';body(i)}});
+cv.addEventListener('wheel',e=>{if(!W&&!intro)ship.position.addScaledVector(V3(0,0,-1).applyQuaternion(ship.quaternion),-e.deltaY*.05)},{passive:true});
+// loop
+const clk=new THREE.Clock();let hT=0,pT=0,ft=0,T=0;
+ship.position.copy(H).add(V3(60,10,0));
+function frame(){requestAnimationFrame(frame);const dt=Math.min(clk.getDelta(),.05);T+=dt;bu.t.value=T;
+ft=ft*.95+dt*.05;if(ft>.026&&pr>.8){pr-=.1;R.setPixelRatio(pr);ft=.016}
+PL.forEach(p=>{p.piv.rotation.y+=p.sp*dt;p.m.rotation.y+=p.rot*dt*.3});sunM.rotation.y+=dt*.02;hero.rotation.y+=dt*.01;ZG.rotation.y+=dt*.03;ZB.rotation.y+=dt*.004;if(ZD.userData.upd)ZD.userData.upd(dt,T);
+halo.lookAt(cam.position);pho.lookAt(cam.position);sky.position.copy(cam.position);
+if(W){W.t+=dt/W.d;const t=Math.min(1,W.t),e=ease(t);ship.position.lerpVectors(W.a,W.b,e);yaw=W.ya+(W.yb-W.ya)*e;pitch=W.pa+(W.pb-W.pa)*e;cam.fov=60+28*Math.sin(PI*t);cam.updateProjectionMatrix();if(t>=1){const c=W.cb;W=null;cam.fov=60;cam.updateProjectionMatrix();c&&c()}}
+else if(intro){introT+=dt;const a=introT*.05+1,cp_=H.clone().add(V3(Math.cos(a)*95,14+Math.sin(a*.7)*8,Math.sin(a)*95));cam.position.copy(cp_);cam.lookAt(H);const d=H.clone().sub(cp_).normalize(),r=d.clone().cross(V3(0,1,0)).normalize();ship.position.copy(cp_).addScaledVector(d,6).addScaledVector(r,1.6).add(V3(0,-.7+Math.sin(introT)*.1,0));yaw=Math.atan2(-d.x,-d.z)+.6;pitch=0}
+else if(!lostOn&&fi<0||(!W&&!intro&&!lostOn)){const f=(K.w?1:0)-(K.s?1:0),sd=(K.d?1:0)-(K.a?1:0),u=(K[' ']?1:0)-(K.q?1:0),q=ship.quaternion,fw=V3(0,0,-1).applyQuaternion(q),rt=V3(1,0,0).applyQuaternion(q);
+const tg=fw.multiplyScalar(f).add(rt.multiplyScalar(sd)).add(V3(0,u,0));if(tg.lengthSq()>0)tg.normalize().multiplyScalar(K.shift?160:28);vel.lerp(tg,1-Math.exp(-2.5*dt));
+const tb=B.clone().sub(ship.position),d=tb.length();if(d<90)vel.addScaledVector(tb.normalize(),40*Math.pow(1-d/90,2)*dt);ship.position.addScaledVector(vel,dt);if(d<11&&Z=='bh')lost()}
+ship.rotation.set(pitch,yaw,0,'YXZ');ship.visible=!cockpit||intro;
+if(!intro||W){if(cockpit){cam.position.copy(ship.position).add(V3(0,.12,-.25).applyQuaternion(ship.quaternion));cam.quaternion.copy(ship.quaternion)}else{const tp_=V3(0,.45,2.4).applyQuaternion(ship.quaternion).add(ship.position);cam.position.lerp(tp_,1-Math.exp(-9*dt));cam.lookAt(ship.position.clone().add(V3(0,0,-3).applyQuaternion(ship.quaternion)))}}
+const sp=vel.length();eng.forEach(g=>g.scale.setScalar(.5+sp/90+(K.shift?.4:0)));const ep=ship.localToWorld(V3(0,0,.65));tp.copyWithin(3,0,TN*3-3);tp.set([ep.x,ep.y,ep.z],0);tg.attributes.position.needsUpdate=true;trail.material.opacity=Math.min(1,sp/15);
+if(eg)eg.gain.setTargetAtTime(Math.min(.3,.03+sp/300),AC.currentTime,.1);
+if(!W&&cam.fov!=60+(K.shift&&sp>5?8:0)){cam.fov+=(60+(K.shift&&sp>5?8:0)-cam.fov)*.1;cam.updateProjectionMatrix()}
+pT+=dt;if(pT>.3){pT=0;BODIES.forEach((b,i)=>{if(i>0){const d=ship.position.distanceTo(wp(b.mesh)),hi=d<45;if(b.mesh.userData.hi!==hi){b.mesh.userData.hi=hi;b.mesh.geometry=hi?gH:gL}}})}
+hT+=dt;if(hT>.1){hT=0;const p=ship.position;$('#hud').innerHTML=`Coordinates <b>${p.x.toFixed(0)}, ${p.y.toFixed(0)}, ${p.z.toFixed(0)}</b><br>Destination <b>${sel}</b><br>Speed <b>${sp.toFixed(1)} u/s</b> · Altitude <b>${p.y.toFixed(0)} u</b><br>From Earth <b>${p.distanceTo(wp(earth)).toFixed(0)} u</b><br>Discoveries <b>${seen.size}</b>`}
+R.render(S,cam)}
+frame();$('#nv button').classList.add('on');
+requestAnimationFrame(()=>{$('#lb').style.width='100%';setTimeout(()=>{$('#ld').style.opacity=0;setTimeout(()=>$('#ld').remove(),1000)},1300)});
+</script></body></html>
